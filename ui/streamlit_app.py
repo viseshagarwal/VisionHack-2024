@@ -10,13 +10,47 @@ from analytics.anomaly_detection import anomaly_detector
 from config.settings import Config
 import warnings
 
+
 # Suppress warnings
 warnings.filterwarnings("ignore")
 
 
+# def draw_detections(image, boxes, scores, classes):
+#     """
+#     Draw detection results on image
+
+#     Args:
+#         image (PIL.Image): Input image
+#         boxes, scores, classes (numpy arrays): Detection results
+
+#     Returns:
+#         PIL.Image: Image with detections drawn
+#     """
+#     draw = ImageDraw.Draw(image)
+
+#     for box, score, cls in zip(boxes, scores, classes):
+#         ymin, xmin, ymax, xmax = box
+#         (left, top, right, bottom) = (
+#             xmin * image.width,
+#             ymin * image.height,
+#             xmax * image.width,
+#             ymax * image.height
+#         )
+
+#         draw.rectangle(
+#             [left, top, right, bottom],
+#             outline="red",
+#             width=3
+#         )
+
+#         label = f"{model_loader.category_index.get(cls, 'Unknown')} ({score:.2f})"
+#         draw.text((left, top), label, fill="red")
+
+#     return image
+
 def draw_detections(image, boxes, scores, classes):
     """
-    Draw detection results on image
+    Draw detection results on image with enhanced visibility
 
     Args:
         image (PIL.Image): Input image
@@ -26,6 +60,23 @@ def draw_detections(image, boxes, scores, classes):
         PIL.Image: Image with detections drawn
     """
     draw = ImageDraw.Draw(image)
+    
+    # Try to import a font for better text rendering
+    try:
+        from PIL import ImageFont
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
+    except:
+        font = None
+
+    # Color map for different objects
+    colors = {
+        'person': "red",
+        'car': "blue",
+        'truck': "green",
+        'bicycle': "yellow",
+        'motorcycle': "purple"
+        # Add more colors for other objects as needed
+    }
 
     for box, score, cls in zip(boxes, scores, classes):
         ymin, xmin, ymax, xmax = box
@@ -36,17 +87,38 @@ def draw_detections(image, boxes, scores, classes):
             ymax * image.height
         )
 
+        # Get object name and color
+        object_name = model_loader.category_index.get(cls, 'Unknown')
+        color = colors.get(object_name.lower(), "red")
+
+        # Draw bounding box
         draw.rectangle(
             [left, top, right, bottom],
-            outline="red",
+            outline=color,
             width=3
         )
 
-        label = f"{model_loader.category_index.get(cls, 'Unknown')} ({score:.2f})"
-        draw.text((left, top), label, fill="red")
+        # Draw filled rectangle for text background
+        label = f"{object_name} ({score:.1%})"
+        if font:
+            text_bbox = draw.textbbox((left, top-20), label, font=font)
+        else:
+            text_bbox = draw.textbbox((left, top-20), label)
+            
+        draw.rectangle(
+            [text_bbox[0]-2, text_bbox[1]-2, text_bbox[2]+2, text_bbox[3]+2],
+            fill=color
+        )
+
+        # Draw text
+        draw.text(
+            (left, top-20),
+            label,
+            fill="white",
+            font=font
+        )
 
     return image
-
 
 def main():
     st.title("Advanced Object Detection System")
@@ -74,7 +146,6 @@ def main():
     else:
         handle_video_detection(confidence_threshold)
 
-
 # def handle_image_detection(confidence_threshold):
 #     """
 #     Handle image detection workflow
@@ -86,7 +157,7 @@ def main():
 
 #     if uploaded_image is not None:
 #         image = Image.open(uploaded_image).convert("RGB")
-#         st.image(image, caption="Uploaded Image", use_column_width=True)
+#         st.image(image, caption="Uploaded Image", use_container_width=True)
 
 #         # Convert to numpy for detection
 #         image_np = np.array(image)
@@ -100,10 +171,12 @@ def main():
 #         # Update anomaly detector
 #         anomaly_detector.update_history((boxes, scores, classes))
 
-#         # Draw detections
+#         # Draw detections - Fixed version
 #         detected_image = draw_detections(
-#             image.copy
-#             # ui/streamlit_app.py (continued)
+#             image=image.copy(),  # Call copy() method
+#             boxes=boxes,
+#             scores=scores,
+#             classes=classes
 #         )
 
 #         # Detect anomalies
@@ -120,11 +193,11 @@ def main():
 
 #         # Display detected image
 #         st.image(detected_image, caption="Detected Objects",
-#                  use_column_width=True)
-
+#                  use_container_width=True)
+        
 def handle_image_detection(confidence_threshold):
     """
-    Handle image detection workflow
+    Handle image detection workflow with detailed object information
     """
     uploaded_image = st.file_uploader(
         "Upload an image...",
@@ -133,44 +206,81 @@ def handle_image_detection(confidence_threshold):
 
     if uploaded_image is not None:
         image = Image.open(uploaded_image).convert("RGB")
-        st.image(image, caption="Uploaded Image", use_column_width=True)
+        st.image(image, caption="Uploaded Image", use_container_width=True)
 
-        # Convert to numpy for detection
-        image_np = np.array(image)
+        # Show "Detecting objects..." message while processing
+        with st.spinner('Detecting objects...'):
+            # Convert to numpy for detection
+            image_np = np.array(image)
 
-        # Detect objects
-        boxes, scores, classes = model_loader.detect_objects(
-            image_np,
-            confidence_threshold
-        )
+            # Detect objects
+            boxes, scores, classes = model_loader.detect_objects(
+                image_np,
+                confidence_threshold
+            )
 
-        # Update anomaly detector
-        anomaly_detector.update_history((boxes, scores, classes))
+            # Create a summary of detected objects
+            detected_objects = {}
+            for cls, score in zip(classes, scores):
+                object_name = model_loader.category_index.get(cls, 'Unknown')
+                if object_name in detected_objects:
+                    detected_objects[object_name]['count'] += 1
+                    detected_objects[object_name]['scores'].append(score)
+                else:
+                    detected_objects[object_name] = {
+                        'count': 1,
+                        'scores': [score]
+                    }
 
-        # Draw detections - Fixed version
-        detected_image = draw_detections(
-            image=image.copy(),  # Call copy() method
-            boxes=boxes,
-            scores=scores,
-            classes=classes
-        )
+            # Display detection summary
+            st.subheader("Detected Objects:")
+            if len(detected_objects) > 0:
+                for obj_name, data in detected_objects.items():
+                    avg_confidence = sum(data['scores']) / len(data['scores'])
+                    st.write(f"✓ {obj_name}")
+                    st.text(f"   Count: {data['count']}")
+                    st.text(f"   Average Confidence: {avg_confidence:.2%}")
+            else:
+                st.write("No objects detected in the image.")
 
-        # Detect anomalies
-        anomaly_score = anomaly_detector.calculate_anomaly_score()
-        unusual_patterns = anomaly_detector.detect_unusual_patterns()
+            # Update anomaly detector
+            anomaly_detector.update_history((boxes, scores, classes))
 
-        # Display anomaly information
-        if anomaly_score > 0.5:
-            st.warning(f"Potential Anomalies Detected! Anomaly Score: {anomaly_score:.2f}")
-            if unusual_patterns:
-                st.write("Unusual Patterns:")
-                for pattern in unusual_patterns:
-                    st.info(f"New Objects Appeared: {pattern['objects']}")
+            # Draw detections
+            detected_image = draw_detections(
+                image=image.copy(),
+                boxes=boxes,
+                scores=scores,
+                classes=classes
+            )
 
-        # Display detected image
-        st.image(detected_image, caption="Detected Objects",
-                 use_column_width=True)
-        
+            # Detect anomalies
+            anomaly_score = anomaly_detector.calculate_anomaly_score()
+            unusual_patterns = anomaly_detector.detect_unusual_patterns()
+
+            # Display anomaly information
+            if anomaly_score > 0.5:
+                st.warning(f"⚠️ Potential Anomalies Detected! Anomaly Score: {anomaly_score:.2f}")
+                if unusual_patterns:
+                    st.write("Unusual Patterns:")
+                    for pattern in unusual_patterns:
+                        st.info(f"🔍 New Objects Appeared: {pattern['objects']}")
+
+            # Display detected image
+            st.image(detected_image, caption="Detected Objects", use_container_width=True)
+
+            # Display additional statistics
+            st.subheader("Detection Statistics:")
+            total_objects = sum(data['count'] for data in detected_objects.values())
+            st.text(f"Total Objects Detected: {total_objects}")
+            
+            if total_objects > 0:
+                avg_confidence_all = sum(
+                    score for data in detected_objects.values() 
+                    for score in data['scores']
+                ) / total_objects
+                st.text(f"Overall Average Confidence: {avg_confidence_all:.2%}")
+
 def handle_video_detection(confidence_threshold):
     """
     Handle video detection workflow

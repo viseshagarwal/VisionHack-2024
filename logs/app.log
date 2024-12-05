@@ -1,28 +1,28 @@
-2024-12-06 00:37:29,549 - __main__ - INFO - Initializing Object Detection Project
-2024-12-06 00:37:30,643 - __main__ - INFO - Initializing Object Detection Project
-2024-12-06 00:37:40,593 - tensorflow - INFO - Saver not created because there are no variables in the graph to restore
-2024-12-06 00:37:40,597 - tensorflow - INFO - Saver not created because there are no variables in the graph to restore
-2024-12-06 00:38:07,688 - absl - INFO - Fingerprint not found. Saved model loading will continue.
-2024-12-06 00:38:07,689 - absl - INFO - path_and_singleprint metric could not be logged. Saved model loading will continue.
-2024-12-06 00:38:07,696 - models.pretrained_models - INFO - Model loaded successfully from /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/faster_rcnn_resnet50_coco_2018_01_28/saved_model/
-2024-12-06 00:38:07,697 - models.pretrained_models - INFO - Loaded 53 labels
-2024-12-06 00:38:07,697 - __main__ - INFO - Project initialization complete
-2024-12-06 00:38:08,035 - absl - INFO - Fingerprint not found. Saved model loading will continue.
-2024-12-06 00:38:08,035 - absl - INFO - path_and_singleprint metric could not be logged. Saved model loading will continue.
-2024-12-06 00:38:08,054 - models.pretrained_models - INFO - Model loaded successfully from /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/faster_rcnn_resnet50_coco_2018_01_28/saved_model/
-2024-12-06 00:38:08,055 - models.pretrained_models - INFO - Loaded 53 labels
-2024-12-06 00:38:08,055 - __main__ - INFO - Project initialization complete
-2024-12-06 00:38:13,077 - __main__ - INFO - Initializing Object Detection Project
-2024-12-06 00:38:14,970 - tensorflow - INFO - Saver not created because there are no variables in the graph to restore
-2024-12-06 00:38:23,212 - absl - INFO - Fingerprint not found. Saved model loading will continue.
-2024-12-06 00:38:23,212 - absl - INFO - path_and_singleprint metric could not be logged. Saved model loading will continue.
-2024-12-06 00:38:23,275 - models.pretrained_models - INFO - Model loaded successfully from /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/faster_rcnn_resnet50_coco_2018_01_28/saved_model/
-2024-12-06 00:38:23,276 - models.pretrained_models - INFO - Loaded 53 labels
-2024-12-06 00:38:23,276 - __main__ - INFO - Project initialization complete
-2024-12-06 00:38:39,214 - __main__ - INFO - Initializing Object Detection Project
-2024-12-06 00:38:41,991 - tensorflow - INFO - Saver not created because there are no variables in the graph to restore
-2024-12-06 00:38:50,837 - absl - INFO - Fingerprint not found. Saved model loading will continue.
-2024-12-06 00:38:50,838 - absl - INFO - path_and_singleprint metric could not be logged. Saved model loading will continue.
-2024-12-06 00:38:50,873 - models.pretrained_models - INFO - Model loaded successfully from /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/faster_rcnn_resnet50_coco_2018_01_28/saved_model/
-2024-12-06 00:38:50,873 - models.pretrained_models - INFO - Loaded 53 labels
-2024-12-06 00:38:50,873 - __main__ - INFO - Project initialization complete
+2024-12-06 01:11:30,376 - __main__ - INFO - Initializing Object Detection Project
+2024-12-06 01:11:30,453 - __main__ - INFO - Initializing Object Detection Project
+2024-12-06 01:11:40,098 - tensorflow - INFO - Saver not created because there are no variables in the graph to restore
+2024-12-06 01:11:40,706 - tensorflow - INFO - Saver not created because there are no variables in the graph to restore
+2024-12-06 01:12:04,334 - absl - INFO - Fingerprint not found. Saved model loading will continue.
+2024-12-06 01:12:04,398 - absl - INFO - path_and_singleprint metric could not be logged. Saved model loading will continue.
+2024-12-06 01:12:04,401 - absl - INFO - Fingerprint not found. Saved model loading will continue.
+2024-12-06 01:12:04,406 - models.pretrained_models - INFO - Model loaded successfully from /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/faster_rcnn_resnet50_coco_2018_01_28/saved_model/
+2024-12-06 01:12:04,407 - absl - INFO - path_and_singleprint metric could not be logged. Saved model loading will continue.
+2024-12-06 01:12:04,424 - models.pretrained_models - INFO - Model loaded successfully from /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/faster_rcnn_resnet50_coco_2018_01_28/saved_model/
+2024-12-06 01:12:04,425 - models.pretrained_models - INFO - Loaded 415 labels
+2024-12-06 01:12:04,425 - models.pretrained_models - INFO - Loaded 415 labels
+2024-12-06 01:12:04,425 - __main__ - INFO - Project initialization complete
+2024-12-06 01:12:04,425 - __main__ - INFO - Project initialization complete
+2024-12-06 01:12:26,361 - __main__ - INFO - Initializing Object Detection Project
+2024-12-06 01:12:28,273 - tensorflow - INFO - Saver not created because there are no variables in the graph to restore
+2024-12-06 01:12:35,523 - absl - INFO - Fingerprint not found. Saved model loading will continue.
+2024-12-06 01:12:35,523 - absl - INFO - path_and_singleprint metric could not be logged. Saved model loading will continue.
+2024-12-06 01:12:35,546 - models.pretrained_models - INFO - Model loaded successfully from /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/faster_rcnn_resnet50_coco_2018_01_28/saved_model/
+2024-12-06 01:12:35,547 - models.pretrained_models - INFO - Loaded 415 labels
+2024-12-06 01:12:35,547 - __main__ - INFO - Project initialization complete
+2024-12-06 01:13:07,240 - __main__ - INFO - Initializing Object Detection Project
+2024-12-06 01:13:08,951 - tensorflow - INFO - Saver not created because there are no variables in the graph to restore
+2024-12-06 01:13:16,378 - absl - INFO - Fingerprint not found. Saved model loading will continue.
+2024-12-06 01:13:16,378 - absl - INFO - path_and_singleprint metric could not be logged. Saved model loading will continue.
+2024-12-06 01:13:16,399 - models.pretrained_models - INFO - Model loaded successfully from /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/faster_rcnn_resnet50_coco_2018_01_28/saved_model/
+2024-12-06 01:13:16,399 - models.pretrained_models - INFO - Loaded 415 labels
+2024-12-06 01:13:16,399 - __main__ - INFO - Project initialization complete
