@@ -1,0 +1,3 @@
+2024-12-05 23:36:24,263 - __main__ - INFO - Initializing Object Detection Project
+2024-12-05 23:36:28,160 - models.pretrained_models - ERROR - Error loading model: SavedModel file does not exist at: /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/{saved_model.pbtxt|saved_model.pb}
+2024-12-05 23:36:28,160 - __main__ - ERROR - Initialization failed: SavedModel file does not exist at: /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/{saved_model.pbtxt|saved_model.pb}
