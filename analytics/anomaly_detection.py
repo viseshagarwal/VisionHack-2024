@@ -2,6 +2,10 @@
 import numpy as np
 from config.settings import Config
 import logging
+import warnings
+
+# Suppress warnings
+warnings.filterwarnings("ignore")
 
 class AnomalyDetector:
     def __init__(self):

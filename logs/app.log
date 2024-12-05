@@ -1,3 +1,26 @@
-2024-12-05 23:36:24,263 - __main__ - INFO - Initializing Object Detection Project
-2024-12-05 23:36:28,160 - models.pretrained_models - ERROR - Error loading model: SavedModel file does not exist at: /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/{saved_model.pbtxt|saved_model.pb}
-2024-12-05 23:36:28,160 - __main__ - ERROR - Initialization failed: SavedModel file does not exist at: /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/{saved_model.pbtxt|saved_model.pb}
+2024-12-06 00:12:50,588 - __main__ - INFO - Initializing Object Detection Project
+2024-12-06 00:12:51,238 - __main__ - INFO - Initializing Object Detection Project
+2024-12-06 00:12:58,934 - tensorflow - INFO - Saver not created because there are no variables in the graph to restore
+2024-12-06 00:13:05,633 - tensorflow - INFO - Saver not created because there are no variables in the graph to restore
+2024-12-06 00:13:22,600 - absl - INFO - Fingerprint not found. Saved model loading will continue.
+2024-12-06 00:13:22,601 - absl - INFO - path_and_singleprint metric could not be logged. Saved model loading will continue.
+2024-12-06 00:13:22,605 - models.pretrained_models - INFO - Model loaded successfully from /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/faster_rcnn_resnet50_coco_2018_01_28/saved_model/
+2024-12-06 00:13:22,631 - models.pretrained_models - ERROR - Error loading labels: Descriptors cannot be created directly.
+If this call came from a _pb2.py file, your generated code is out of date and must be regenerated with protoc >= 3.19.0.
+If you cannot immediately regenerate your protos, some other possible workarounds are:
+ 1. Downgrade the protobuf package to 3.20.x or lower.
+ 2. Set PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python (but this will use pure-Python parsing and will be much slower).
+
+More information: https://developers.google.com/protocol-buffers/docs/news/2022-05-06#python-updates
+2024-12-06 00:13:22,633 - __main__ - INFO - Project initialization complete
+2024-12-06 00:13:24,407 - absl - INFO - Fingerprint not found. Saved model loading will continue.
+2024-12-06 00:13:24,407 - absl - INFO - path_and_singleprint metric could not be logged. Saved model loading will continue.
+2024-12-06 00:13:24,423 - models.pretrained_models - INFO - Model loaded successfully from /home/visesh/Desktop/CV/VisionHack-2024/models/faster_rcnn_resnet50/faster_rcnn_resnet50_coco_2018_01_28/saved_model/
+2024-12-06 00:13:24,424 - models.pretrained_models - ERROR - Error loading labels: Descriptors cannot be created directly.
+If this call came from a _pb2.py file, your generated code is out of date and must be regenerated with protoc >= 3.19.0.
+If you cannot immediately regenerate your protos, some other possible workarounds are:
+ 1. Downgrade the protobuf package to 3.20.x or lower.
+ 2. Set PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python (but this will use pure-Python parsing and will be much slower).
+
+More information: https://developers.google.com/protocol-buffers/docs/news/2022-05-06#python-updates
+2024-12-06 00:13:24,424 - __main__ - INFO - Project initialization complete

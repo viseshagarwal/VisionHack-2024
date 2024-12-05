@@ -4,6 +4,11 @@ import json
 import logging
 from datetime import datetime
 from config.settings import Config
+import warnings
+
+# Suppress warnings
+warnings.filterwarnings("ignore")
+
 
 class DataLogger:
     def __init__(self, log_dir=None):
@@ -14,7 +19,7 @@ class DataLogger:
     def log_detection_results(self, image_path, results):
         """
         Log object detection results to a JSON file
-        
+
         Args:
             image_path (str): Path to the processed image
             results (dict): Detection results
@@ -33,7 +38,7 @@ class DataLogger:
                         {
                             'class': model_loader.category_index.get(cls, 'Unknown'),
                             'confidence': float(score)
-                        } 
+                        }
                         for cls, score in zip(results.get('classes', []), results.get('scores', []))
                     ]
                 }
@@ -49,16 +54,17 @@ class DataLogger:
     def get_recent_logs(self, limit=10):
         """
         Retrieve recent detection logs
-        
+
         Args:
             limit (int): Number of recent logs to retrieve
-        
+
         Returns:
             list: Recent log entries
         """
         try:
             log_files = sorted(
-                [f for f in os.listdir(self.log_dir) if f.startswith('detection_log_')],
+                [f for f in os.listdir(self.log_dir)
+                 if f.startswith('detection_log_')],
                 reverse=True
             )[:limit]
 
@@ -71,6 +77,7 @@ class DataLogger:
         except Exception as e:
             self.logger.error(f"Error retrieving logs: {e}")
             return []
+
 
 # Singleton instance
 data_logger = DataLogger()

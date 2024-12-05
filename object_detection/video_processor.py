@@ -4,6 +4,10 @@ import numpy as np
 from models.pretrained_models import model_loader
 from config.settings import Config
 import logging
+import warnings
+
+# Suppress warnings
+warnings.filterwarnings("ignore")
 
 class VideoProcessor:
     def __init__(self):

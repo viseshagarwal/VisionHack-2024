@@ -5,9 +5,13 @@ from PIL import Image, ImageDraw
 import cv2
 
 from models.pretrained_models import model_loader
-from detection.video_processor import video_processor
+from object_detection.video_processor import video_processor
 from analytics.anomaly_detection import anomaly_detector
 from config.settings import Config
+import warnings
+
+# Suppress warnings
+warnings.filterwarnings("ignore")
 
 
 def draw_detections(image, boxes, scores, classes):
@@ -38,8 +42,7 @@ def draw_detections(image, boxes, scores, classes):
             width=3
         )
 
-        label = f"{model_loader.category_index.get(cls, 'Unknown')} ({
-            score:.2f})"
+        label = f"{model_loader.category_index.get(cls, 'Unknown')} ({score:.2f})"
         draw.text((left, top), label, fill="red")
 
     return image
@@ -109,8 +112,7 @@ def handle_image_detection(confidence_threshold):
 
         # Display anomaly information
         if anomaly_score > 0.5:
-            st.warning(f"Potential Anomalies Detected! Anomaly Score: {
-                       anomaly_score:.2f}")
+            st.warning(f"Potential Anomalies Detected! Anomaly Score: {anomaly_score:.2f}")
             if unusual_patterns:
                 st.write("Unusual Patterns:")
                 for pattern in unusual_patterns:
@@ -166,8 +168,7 @@ def handle_video_detection(confidence_threshold):
                         2
                     )
 
-                    label = f"{model_loader.category_index.get(cls, 'Unknown')}: {
-                        score:.2f}"
+                    label = f"{model_loader.category_index.get(cls, 'Unknown')}: {score:.2f}"
                     cv2.putText(
                         frame,
                         label,
@@ -200,9 +201,7 @@ def handle_video_detection(confidence_threshold):
                 anomaly_frames += 1
 
             # Update placeholders
-            status_placeholder.text(
-                f"Processing: {processed_frames}/{total_frames} frames"
-            )
+            status_placeholder.text(f"Processing: {processed_frames}/{total_frames} frames")
             video_placeholder.image(frame, channels="BGR")
 
             processed_frames += 1
@@ -214,10 +213,7 @@ def handle_video_detection(confidence_threshold):
         # Final anomaly report
         anomaly_percentage = (anomaly_frames / total_frames) * \
             100 if total_frames > 0 else 0
-        anomaly_placeholder.metric(
-            "Anomaly Analysis",
-            f"{anomaly_percentage:.2f}% of frames with potential anomalies"
-        )
+        anomaly_placeholder.metric("Anomaly Analysis",f"{anomaly_percentage:.2f}% of frames with potential anomalies")
 
 
 def setup_logging():
