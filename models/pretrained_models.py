@@ -1,144 +1,3 @@
-# # models/pretrained_models.py
-# import os
-# import tensorflow as tf
-# import numpy as np
-# from config.settings import Config
-# import logging
-# import requests
-# import warnings
-
-# # Suppress warnings
-# warnings.filterwarnings("ignore")
-
-
-# class ModelLoader:
-#     MODELS = {
-#         'faster_rcnn_resnet50': {
-#             'url': 'http://download.tensorflow.org/models/object_detection/faster_rcnn_resnet50_coco_2018_01_28.tar.gz',
-#             'local_path': os.path.join(Config.MODELS_DIR, 'faster_rcnn_resnet50')
-#         }
-#     }
-
-#     def __init__(self):
-#         self.logger = logging.getLogger(__name__)
-#         self.model = None
-#         self.category_index = {}
-
-#     def _download_model(self, model_key='faster_rcnn_resnet50'):
-#         """
-#         Download pre-trained model if not exists
-#         """
-#         model_info = self.MODELS[model_key]
-#         os.makedirs(model_info['local_path'], exist_ok=True)
-
-#         # Check if model is already downloaded
-#         saved_model_path = os.path.join(
-#             model_info['local_path'], 'faster_rcnn_resnet50_coco_2018_01_28/saved_model/')
-#         if os.path.exists(saved_model_path):
-#             return saved_model_path
-
-#         self.logger.info(f"Downloading model: {model_key}")
-#         try:
-#             import urllib.request
-#             import tarfile
-
-#             # Download the model
-#             tar_path = os.path.join(model_info['local_path'], 'model.tar.gz')
-#             urllib.request.urlretrieve(model_info['url'], tar_path)
-
-#             # Extract the model
-#             with tarfile.open(tar_path, 'r:gz') as tar:
-#                 tar.extractall(path=model_info['local_path'])
-
-#             # Remove the tar file
-#             os.remove(tar_path)
-
-#             return saved_model_path
-#         except Exception as e:
-#             self.logger.error(f"Model download failed: {e}")
-#             raise
-
-#     def load_model(self, model_key='faster_rcnn_resnet50'):
-#         """
-#         Load a pre-trained TensorFlow object detection model
-#         """
-#         try:
-#             # Ensure model is downloaded
-#             model_path = self._download_model(model_key)
-
-#             # Verify model path
-#             saved_model_files = ['saved_model.pb', 'saved_model.pbtxt']
-#             if not any(os.path.exists(os.path.join(model_path, f)) for f in saved_model_files):
-#                 raise FileNotFoundError(
-#                     f"No saved model found in {model_path}")
-
-#             self.model = tf.saved_model.load(model_path)
-#             self.logger.info(f"Model loaded successfully from {model_path}")
-#             return self.model
-#         except Exception as e:
-#             self.logger.error(f"Error loading model: {e}")
-#             raise
-
-#     def load_labels(self):
-#         """
-#         Load COCO labels
-#         """
-#         try:
-#             # Use TensorFlow's built-in COCO labels
-#             from object_detection.utils import label_map_util
-
-#             label_map_path = tf.keras.utils.get_file(
-#                 'mscoco_label_map.pbtxt',
-#                 'https://raw.githubusercontent.com/tensorflow/models/master/research/object_detection/data/mscoco_label_map.pbtxt'
-#             )
-
-#             label_map = label_map_util.load_labelmap(label_map_path)
-#             categories = label_map_util.convert_label_map_to_categories(
-#                 label_map, max_num_classes=90, use_display_name=True
-#             )
-
-#             self.category_index = {
-#                 item['id']: item['name'] for item in categories
-#             }
-
-#             self.logger.info(f"Loaded {len(self.category_index)} labels")
-#             return self.category_index
-#         except Exception as e:
-#             self.logger.error(f"Error loading labels: {e}")
-#             raise
-
-#     def detect_objects(self, image_np, confidence_threshold=0.5):
-#         """
-#         Perform object detection on an image
-#         """
-#         if self.model is None:
-#             self.load_model()
-
-#         input_tensor = tf.convert_to_tensor(image_np)
-#         input_tensor = input_tensor[tf.newaxis, ...]
-
-#         detections = self.model(input_tensor)
-
-#         num_detections = int(detections.pop("num_detections"))
-#         detections = {key: value[0, :num_detections].numpy()
-#                       for key, value in detections.items()}
-
-#         detection_boxes = detections["detection_boxes"]
-#         detection_scores = detections["detection_scores"]
-#         detection_classes = detections["detection_classes"].astype(np.int64)
-
-#         # Filter detections by confidence
-#         mask = detection_scores >= confidence_threshold
-#         return (
-#             detection_boxes[mask],
-#             detection_scores[mask],
-#             detection_classes[mask]
-#         )
-
-
-# # Singleton instance for easy import
-# model_loader = ModelLoader()
-
 # models/pretrained_models.py
 import os
 import logging
@@ -297,6 +156,48 @@ class ModelLoader:
             self.logger.error(f"Error loading labels: {e}")
             return self.COCO_LABELS
 
+    # def detect_objects(self, image_np, confidence_threshold=None):
+    #     """
+    #     Perform object detection on an image.
+
+    #     Args:
+    #         image_np (np.ndarray): Input image as a numpy array
+    #         confidence_threshold (float, optional): Minimum confidence for detection
+
+    #     Returns:
+    #         tuple: Filtered detection boxes, scores, and classes
+    #     """
+    #     # Use default confidence threshold if not provided
+    #     threshold = confidence_threshold or Config.CONFIDENCE_THRESHOLD
+
+    #     # Ensure model is loaded
+    #     if self.model is None:
+    #         self.load_model()
+
+    #     # Prepare input tensor
+    #     input_tensor = tf.convert_to_tensor(image_np)
+    #     input_tensor = input_tensor[tf.newaxis, ...]
+
+    #     # Perform detection
+    #     detections = self.model(input_tensor)
+
+    #     # Process detections
+    #     num_detections = int(detections.pop("num_detections"))
+    #     detections = {key: value[0, :num_detections].numpy()
+    #                   for key, value in detections.items()}
+
+    #     detection_boxes = detections["detection_boxes"]
+    #     detection_scores = detections["detection_scores"]
+    #     detection_classes = detections["detection_classes"].astype(np.int64)
+
+    #     # Filter detections by confidence
+    #     mask = detection_scores >= threshold
+        #     return (
+        #         detection_boxes[mask],
+        #         detection_scores[mask],
+        #         detection_classes[mask]
+        #     )
+
     def detect_objects(self, image_np, confidence_threshold=None):
         """
         Perform object detection on an image.
@@ -319,17 +220,20 @@ class ModelLoader:
         input_tensor = tf.convert_to_tensor(image_np)
         input_tensor = input_tensor[tf.newaxis, ...]
 
-        # Perform detection
-        detections = self.model(input_tensor)
+        # Get the concrete function for detection
+        detect_fn = self.model.signatures['serving_default']
+        
+        # Perform detection using the concrete function
+        detections = detect_fn(input_tensor)
 
         # Process detections
-        num_detections = int(detections.pop("num_detections"))
+        num_detections = int(detections.pop('num_detections').numpy())
         detections = {key: value[0, :num_detections].numpy()
-                      for key, value in detections.items()}
+                    for key, value in detections.items()}
 
-        detection_boxes = detections["detection_boxes"]
-        detection_scores = detections["detection_scores"]
-        detection_classes = detections["detection_classes"].astype(np.int64)
+        detection_boxes = detections['detection_boxes']
+        detection_scores = detections['detection_scores']
+        detection_classes = detections['detection_classes'].astype(np.int64)
 
         # Filter detections by confidence
         mask = detection_scores >= threshold
@@ -338,7 +242,6 @@ class ModelLoader:
             detection_scores[mask],
             detection_classes[mask]
         )
-
 
 # Create a singleton instance for easy import
 model_loader = ModelLoader()

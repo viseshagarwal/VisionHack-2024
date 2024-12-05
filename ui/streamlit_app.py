@@ -75,6 +75,53 @@ def main():
         handle_video_detection(confidence_threshold)
 
 
+# def handle_image_detection(confidence_threshold):
+#     """
+#     Handle image detection workflow
+#     """
+#     uploaded_image = st.file_uploader(
+#         "Upload an image...",
+#         type=Config.SUPPORTED_IMAGE_TYPES
+#     )
+
+#     if uploaded_image is not None:
+#         image = Image.open(uploaded_image).convert("RGB")
+#         st.image(image, caption="Uploaded Image", use_column_width=True)
+
+#         # Convert to numpy for detection
+#         image_np = np.array(image)
+
+#         # Detect objects
+#         boxes, scores, classes = model_loader.detect_objects(
+#             image_np,
+#             confidence_threshold
+#         )
+
+#         # Update anomaly detector
+#         anomaly_detector.update_history((boxes, scores, classes))
+
+#         # Draw detections
+#         detected_image = draw_detections(
+#             image.copy
+#             # ui/streamlit_app.py (continued)
+#         )
+
+#         # Detect anomalies
+#         anomaly_score = anomaly_detector.calculate_anomaly_score()
+#         unusual_patterns = anomaly_detector.detect_unusual_patterns()
+
+#         # Display anomaly information
+#         if anomaly_score > 0.5:
+#             st.warning(f"Potential Anomalies Detected! Anomaly Score: {anomaly_score:.2f}")
+#             if unusual_patterns:
+#                 st.write("Unusual Patterns:")
+#                 for pattern in unusual_patterns:
+#                     st.info(f"New Objects Appeared: {pattern['objects']}")
+
+#         # Display detected image
+#         st.image(detected_image, caption="Detected Objects",
+#                  use_column_width=True)
+
 def handle_image_detection(confidence_threshold):
     """
     Handle image detection workflow
@@ -100,10 +147,12 @@ def handle_image_detection(confidence_threshold):
         # Update anomaly detector
         anomaly_detector.update_history((boxes, scores, classes))
 
-        # Draw detections
+        # Draw detections - Fixed version
         detected_image = draw_detections(
-            image.copy
-            # ui/streamlit_app.py (continued)
+            image=image.copy(),  # Call copy() method
+            boxes=boxes,
+            scores=scores,
+            classes=classes
         )
 
         # Detect anomalies
@@ -121,8 +170,7 @@ def handle_image_detection(confidence_threshold):
         # Display detected image
         st.image(detected_image, caption="Detected Objects",
                  use_column_width=True)
-
-
+        
 def handle_video_detection(confidence_threshold):
     """
     Handle video detection workflow
