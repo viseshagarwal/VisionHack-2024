@@ -1,4 +1,5 @@
 # models/yolo_detector.py
+import torch
 from ultralytics import YOLO
 import cv2
 import numpy as np
@@ -7,57 +8,25 @@ import time
 import os
 from config.settings import Config
 
+# Enable cuDNN auto-tuner for better performance
+torch.backends.cudnn.benchmark = True
+torch.cuda.set_device(0)
 
 class YOLODetector:
-    # def __init__(self):
-    #     """Initialize YOLO detector with voice capabilities"""
-    #     try:
-    #         if not os.path.exists(Config.MODEL_PATH):
-    #             raise FileNotFoundError(
-    #                 f"Model file not found at {Config.MODEL_PATH}")
-
-    #         self.model = YOLO(Config.MODEL_PATH)
-    #         self.model.to('cuda')
-
-    #         # Initialize text-to-speech for Windows
-    #         try:
-    #             self.engine = pyttsx3.init()
-    #             self.engine.setProperty('rate', Config.TTS_RATE)
-    #             self.engine.setProperty('volume', Config.TTS_VOLUME)
-
-    #             # Get available voices and set a Windows voice
-    #             voices = self.engine.getProperty('voices')
-    #             # Set to a Windows voice if available
-    #             for voice in voices:
-    #                 if "english" in voice.name.lower():
-    #                     self.engine.setProperty('voice', voice.id)
-    #                     break
-
-    #             self.voice_enabled = True
-    #         except Exception as e:
-    #             print(f"Warning: Text-to-speech initialization failed: {e}")
-    #             self.voice_enabled = False
-
-    #         # Track last spoken time for each class
-    #         self.last_spoken = {}
-    #         self.speak_cooldown = Config.SPEAK_COOLDOWN
-
-    #     except Exception as e:
-    #         raise Exception(f"Failed to initialize YOLODetector: {str(e)}")
     def __init__(self):
-        """Initialize YOLO detector with voice capabilities"""
         try:
             # Check if model file exists
             if not os.path.exists(Config.MODEL_PATH):
                 raise FileNotFoundError(
                     f"Model file not found at {Config.MODEL_PATH}")
 
-            # Initialize model with GPU support
-            self.model = YOLO(Config.MODEL_PATH, task='detect')
-            self.model.to('cuda')  # Move model to GPU
+            # Check GPU availability
+            self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+            print(f"\n ------------------------------------ \nUsing device: {self.device}")
 
-            # Optional: Use half precision for faster inference
-            self.model.model.half()  # FP16 inference
+            # Load model and move to GPU
+            self.model = YOLO(Config.MODEL_PATH)
+            self.model.to("cuda")
 
             # Initialize text-to-speech
             try:
@@ -78,8 +47,11 @@ class YOLODetector:
     def process_frame(self, frame):
         """Process a single frame"""
         try:
-            # Ensure frame is on GPU and use half precision
-            results = self.model(frame, device='cuda')
+            # Move input to GPU if available
+            if torch.cuda.is_available():
+                results = self.model(frame, device=self.device)
+            else:
+                results = self.model(frame)
             return self.draw_boxes(frame, results)
         except Exception as e:
             print(f"Warning: Failed to process frame: {e}")
@@ -88,8 +60,11 @@ class YOLODetector:
     def process_image(self, image):
         """Process an uploaded image"""
         try:
-            # Ensure image is on GPU and use half precision
-            results = self.model(image, device='cuda')
+            # Move input to GPU if available
+            if torch.cuda.is_available():
+                results = self.model(image, device=self.device)
+            else:
+                results = self.model(image)
             return self.draw_boxes(image, results)
         except Exception as e:
             print(f"Warning: Failed to process image: {e}")
