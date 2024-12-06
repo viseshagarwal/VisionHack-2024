@@ -61,12 +61,37 @@
 #     MAX_DETECTION_HISTORY = 100
 
 # config/settings.py
+# config/settings.py
 import os
 
 class Config:
-    # Use local path to model
+    # Use environment variable for port if available
+    PORT = int(os.environ.get('PORT', 8501))
+    
+    # Model path handling
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     MODEL_PATH = os.path.join(BASE_DIR, "models", "weights", "yolov8n.pt")
+    
+    # Download URL for model
+    MODEL_URL = "https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt"
+    
     CONFIDENCE_THRESHOLD = 0.5
-    SPEAK_COOLDOWN = 3  # seconds
+    SPEAK_COOLDOWN = 3
     SUPPORTED_IMAGE_TYPES = ["jpg", "jpeg", "png"]
+
+    @classmethod
+    def initialize(cls):
+        """Initialize configuration"""
+        try:
+            # Create necessary directories
+            os.makedirs(os.path.dirname(cls.MODEL_PATH), exist_ok=True)
+            
+            # Download model if not exists
+            if not os.path.exists(cls.MODEL_PATH):
+                import wget
+                print(f"Downloading YOLOv8 model to {cls.MODEL_PATH}...")
+                wget.download(cls.MODEL_URL, cls.MODEL_PATH)
+                print("\nModel downloaded successfully!")
+        except Exception as e:
+            print(f"Error during initialization: {e}")
+            raise

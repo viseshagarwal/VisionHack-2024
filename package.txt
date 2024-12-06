@@ -1,6 +1,0 @@
-ultralytics==8.0.196
-streamlit>=1.24.0
-opencv-python-headless>=4.8.0
-numpy>=1.24.0
-pyttsx3>=2.90
-wget>=3.2
