@@ -1,91 +1,43 @@
-# # # config/settings.py
-# # import os
-# # import warnings
-
-# # # Suppress warnings
-# # warnings.filterwarnings("ignore")
-
-
-# # class Config:
-# #     # Project Paths
-# #     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# #     MODELS_DIR = os.path.join(BASE_DIR, 'models')
-# #     LOGS_DIR = os.path.join(BASE_DIR, 'logs')
-
-# #     # Model Configuration
-# #     PRETRAINED_MODEL_PATH = os.path.join(MODELS_DIR, 'faster_rcnn_resnet50')
-# #     LABEL_MAP_PATH = os.path.join(MODELS_DIR, 'mscoco_label_map.pbtxt')
-
-# #     # Detection Settings
-# #     CONFIDENCE_THRESHOLD = 0.5
-# #     IOU_THRESHOLD = 0.5
-
-# #     # Logging Configuration
-# #     LOG_LEVEL = 'INFO'
-# #     LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-
-# #     # Performance Tracking
-# #     MAX_TRACKING_HISTORY = 100
-
-# #     # Supported Input Types
-# #     SUPPORTED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png']
-# #     SUPPORTED_VIDEO_TYPES = ['.mp4', '.avi', '.mov']
-
-# #     @classmethod
-# #     def create_directories(cls):
-# #         """Create necessary project directories."""
-# #         os.makedirs(cls.MODELS_DIR, exist_ok=True)
-# #         os.makedirs(cls.LOGS_DIR, exist_ok=True)
-
-
-# # # Initialize directories on import
-# # Config.create_directories()
-
-# # config/settings.py
-# class Config:
-#     # Model settings
-#     CONFIDENCE_THRESHOLD = 0.5
-#     IOU_THRESHOLD = 0.45
-    
-#     # Voice settings
-#     SPEECH_RATE = 150
-#     SPEAK_COOLDOWN = 3
-    
-#     # Logging
-#     LOG_LEVEL = "INFO"
-#     LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-#     LOGS_DIR = "logs"
-    
-#     # Interface
-#     SUPPORTED_IMAGE_TYPES = ["jpg", "jpeg", "png"]
-#     MAX_DETECTION_HISTORY = 100
-
-# config/settings.py
 # config/settings.py
 import os
+import platform
+import torch
+
 
 class Config:
-    # Use environment variable for port if available
-    PORT = int(os.environ.get('PORT', 8501))
-    
-    # Model path handling
+    # Path handling for Windows
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     MODEL_PATH = os.path.join(BASE_DIR, "models", "weights", "yolov8n.pt")
-    
-    # Download URL for model
     MODEL_URL = "https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt"
-    
+
+    # Windows-specific settings
+    IS_WINDOWS = platform.system() == "Windows"
+
+    # Detection settings
     CONFIDENCE_THRESHOLD = 0.5
     SPEAK_COOLDOWN = 3
     SUPPORTED_IMAGE_TYPES = ["jpg", "jpeg", "png"]
 
+    # Windows camera index (usually 0 for built-in webcam)
+    WEBCAM_INDEX = 0
+
+    # Text-to-speech settings for Windows
+    TTS_RATE = 150
+    TTS_VOLUME = 1.0
+
+    DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+    IMG_SIZE = 640  # Input image size
+    CONF_THRESHOLD = 0.25  # Confidence threshold
+    IOU_THRESHOLD = 0.45  # NMS IoU threshold
+
     @classmethod
     def initialize(cls):
-        """Initialize configuration"""
+        """Initialize configuration for Windows environment"""
         try:
-            # Create necessary directories
-            os.makedirs(os.path.dirname(cls.MODEL_PATH), exist_ok=True)
-            
+            # Create model directory using Windows-safe path
+            model_dir = os.path.dirname(cls.MODEL_PATH)
+            os.makedirs(model_dir, exist_ok=True)
+
             # Download model if not exists
             if not os.path.exists(cls.MODEL_PATH):
                 import wget
