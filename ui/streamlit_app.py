@@ -33,35 +33,6 @@ def main():
         st.header("Image Upload")
         run_image_upload(detector)
 
-# def run_webcam(detector):
-#     """Handle webcam input"""
-#     # Create placeholder for webcam feed
-#     frame_placeholder = st.empty()
-#     stop_button = st.button("Stop")
-
-#     try:
-#         cap = cv2.VideoCapture(0)
-#         while not stop_button:
-#             ret, frame = cap.read()
-#             if not ret:
-#                 st.error("Failed to access webcam")
-#                 break
-
-#             # Process frame
-#             processed_frame = detector.process_frame(frame)
-
-#             # Convert BGR to RGB
-#             rgb_frame = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
-
-#             # Display frame
-#             frame_placeholder.image(rgb_frame, channels="RGB", use_container_width=True)
-
-#     except Exception as e:
-#         st.error(f"Error accessing webcam: {str(e)}")
-#     finally:
-#         if 'cap' in locals():
-#             cap.release()
-
 
 def run_webcam(detector):
     """Handle webcam input"""

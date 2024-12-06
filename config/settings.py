@@ -10,6 +10,11 @@ class Config:
     MODEL_PATH = os.path.join(BASE_DIR, "models", "weights", "yolov8n.pt")
     MODEL_URL = "https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt"
 
+    # MIDAS_MODEL_PATH = "MiDaS_small"  # or "DPT_Large" for better accuracy
+    MIDAS_MODEL_PATH = "DPT_Large"  # or "DPT_Large" for better accuracy
+    CAMERA_FOCAL_LENGTH = 100  # adjust based on your webcam
+    CALIB_FILE_PATH = os.path.join(
+        BASE_DIR, "config", "camera_calibration.pkl")
     # Windows-specific settings
     IS_WINDOWS = platform.system() == "Windows"
 
