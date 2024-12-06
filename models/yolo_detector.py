@@ -12,6 +12,7 @@ from config.settings import Config
 torch.backends.cudnn.benchmark = True
 torch.cuda.set_device(0)
 
+
 class YOLODetector:
     def __init__(self):
         try:
@@ -21,25 +22,27 @@ class YOLODetector:
                     f"Model file not found at {Config.MODEL_PATH}")
 
             # Check GPU availability
-            self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-            print(f"\n ------------------------------------ \nUsing device: {self.device}")
+            self.device = torch.device(
+                'cuda:0' if torch.cuda.is_available() else 'cpu')
+            print(
+                f"\n ------------------------------------ \nUsing device: {self.device}")
 
             # Load model and move to GPU
             self.model = YOLO(Config.MODEL_PATH)
             self.model.to("cuda")
 
             # Initialize text-to-speech
-            try:
-                self.engine = pyttsx3.init()
-                self.engine.setProperty('rate', 150)
-                self.voice_enabled = True
-            except Exception as e:
-                print(f"Warning: Text-to-speech initialization failed: {e}")
-                self.voice_enabled = False
+            # try:
+            #     self.engine = pyttsx3.init()
+            #     self.engine.setProperty('rate', 150)
+            #     self.voice_enabled = True
+            # except Exception as e:
+            #     print(f"Warning: Text-to-speech initialization failed: {e}")
+            #     self.voice_enabled = False
 
-            # Track last spoken time for each class
-            self.last_spoken = {}
-            self.speak_cooldown = Config.SPEAK_COOLDOWN
+            # # Track last spoken time for each class
+            # self.last_spoken = {}
+            # self.speak_cooldown = Config.SPEAK_COOLDOWN
 
         except Exception as e:
             raise Exception(f"Failed to initialize YOLODetector: {str(e)}")
@@ -70,22 +73,22 @@ class YOLODetector:
             print(f"Warning: Failed to process image: {e}")
             return image
 
-    def speak_detection(self, class_name, confidence):
-        """Speak detected object with cooldown"""
-        if not self.voice_enabled:
-            return
+    # def speak_detection(self, class_name, confidence):
+    #     """Speak detected object with cooldown"""
+    #     if not self.voice_enabled:
+    #         return
 
-        current_time = time.time()
-        if (class_name not in self.last_spoken or
-                current_time - self.last_spoken[class_name] > self.speak_cooldown):
-            try:
-                text = f"Detected {class_name} with {
-                    confidence:.0%} confidence"
-                self.engine.say(text)
-                self.engine.runAndWait()
-                self.last_spoken[class_name] = current_time
-            except Exception as e:
-                print(f"Warning: Failed to speak detection: {e}")
+    #     current_time = time.time()
+    #     if (class_name not in self.last_spoken or
+    #             current_time - self.last_spoken[class_name] > self.speak_cooldown):
+    #         try:
+    #             text = f"Detected {class_name} with {
+    #                 confidence:.0%} confidence"
+    #             self.engine.say(text)
+    #             self.engine.runAndWait()
+    #             self.last_spoken[class_name] = current_time
+    #         except Exception as e:
+    #             print(f"Warning: Failed to speak detection: {e}")
 
     def draw_boxes(self, frame, results):
         """Draw detection boxes and labels on frame"""
@@ -116,9 +119,9 @@ class YOLODetector:
                 cv2.putText(annotated_frame, label, (x1, y1-2),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 1, cv2.LINE_AA)
 
-                # Speak detection if confidence is high
-                if conf > Config.CONFIDENCE_THRESHOLD:
-                    self.speak_detection(class_name, conf)
+                # # Speak detection if confidence is high
+                # if conf > Config.CONFIDENCE_THRESHOLD:
+                #     self.speak_detection(class_name, conf)
 
         return annotated_frame
 
