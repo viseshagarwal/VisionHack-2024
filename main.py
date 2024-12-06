@@ -72,6 +72,24 @@
 import os
 import sys
 from ui.streamlit_app import main
+import logging
+import sentry_sdk
+
+# Initialize Sentry for error tracking (optional)
+sentry_sdk.init(
+    dsn="your-sentry-dsn",
+    traces_sample_rate=1.0,
+)
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('app.log'),
+        logging.StreamHandler()
+    ]
+)
 
 def initialize_project():
     """Initialize project and verify dependencies"""
