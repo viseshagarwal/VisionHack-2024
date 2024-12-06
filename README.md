@@ -1,53 +1,20 @@
-# Advanced Object Detection System
+# Real-time Object Detection
 
-## Project Overview
-A comprehensive computer vision project leveraging pre-trained TensorFlow models for advanced object detection, tracking, and anomaly analysis.
+A real-time object detection application using YOLOv8 and Streamlit.
 
 ## Features
-- Real-time object detection for images and videos
-- Advanced object tracking
-- Anomaly detection and pattern recognition
-- Configurable confidence thresholds
-- Streamlit-based interactive interface
 
-## Installation
+- Real-time object detection using webcam
+- Image upload and detection
+- Voice announcements of detected objects
+- Adjustable confidence threshold
 
-### Prerequisites
-- Python 3.8+
-- pip
+## Demo
 
-### Steps
+Visit the live demo: [Your Streamlit App URL]
+
+## Local Development
+
 1. Clone the repository
-2. Create a virtual environment
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-```
-
-3. Install dependencies
-```bash
-pip install -r requirements.txt
-```
-
-## Running the Application
-```bash
-streamlit run main.py
-```
-
-## Project Structure
-- `config/`: Configuration management
-- `models/`: Model loading and management
-- `detection/`: Object detection and tracking
-- `analytics/`: Anomaly detection
-- `ui/`: User interface components
-
-## Contributing
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
-
-## License
-[Specify your license]
-```
+2. Install dependencies: `pip install -r requirements.txt`
+3. Run the app: `streamlit run main.py`
