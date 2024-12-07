@@ -1,20 +1,186 @@
-# Real-time Object Detection
+# VisionHack-2024: Computer Vision Applications
 
-A real-time object detection application using YOLOv8 and Streamlit.
+A comprehensive computer vision application suite built with YOLOv8 and Streamlit, featuring real-time object detection and vehicle tracking capabilities.
 
-## Features
+---
 
-- Real-time object detection using webcam
-- Image upload and detection
-- Voice announcements of detected objects
-- Adjustable confidence threshold
+## 🌟 Features
 
-## Demo
+- **Real-time Object Detection**
 
-Visit the live demo: [Your Streamlit App URL]
+  - Webcam integration for live detection
+  - Support for image upload and analysis
+  - Adjustable confidence thresholds
+  - Detection statistics and counting
 
-## Local Development
+- **Vehicle Tracking System**
+  - Car counting in video footage
+  - Speed estimation
+  - Vehicle tracking across frames
+  - Detailed statistics and reporting
 
-1. Clone the repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Run the app: `streamlit run main.py`
+---
+
+## 🛠️ Technology Stack
+
+- Python 3.8+
+- YOLOv8
+- Streamlit
+- OpenCV
+- PyTorch
+
+---
+
+## 📋 Prerequisites
+
+- Python 3.8 or higher
+- CUDA-capable GPU (recommended for optimal performance)
+- Webcam (for real-time detection)
+
+---
+
+## ⚙️ Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/viseshagarwal/VisionHack-2024.git
+   cd VisionHack-2024
+   ```
+
+2. Create a new virtual environment:
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. Install the dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Run the Streamlit app:
+   ```bash
+   streamlit run Home.py
+   ```
+
+---
+
+## 🚀 Running the Application
+
+1. Start the Streamlit app by running the following command:
+   ```bash
+   streamlit run Home.py
+   ```
+2. Open the browser and navigate to the URL displayed in the terminal.
+3. Select the desired application mode from the sidebar.
+4. Upload an image or start the webcam to begin object detection.
+5. For vehicle tracking, upload a video file and adjust the settings as needed.
+
+---
+
+## 📱 Usage Guide
+
+### Object Detection Module
+
+1. Select **"Object Detection"** from the sidebar.
+2. Choose input source:
+   - **Webcam**: For real-time detection
+   - **Upload Image**: For image analysis
+3. Adjust the confidence threshold using the slider.
+4. View detection results and statistics in real-time.
+
+### Car Counter Module
+
+1. Select **"Car Counter"** from the sidebar.
+2. Upload a video file for processing.
+3. Monitor:
+   - Real-time car counting
+   - Speed estimation
+   - Vehicle tracking
+   - Statistical analysis
+
+---
+
+## 📁 Project Structure
+
+```
+VisionHack-2024/
+├── Home.py                # Main application entry point
+├── app.py                 # Application initialization
+├── config/
+│   └── settings.py        # Configuration settings
+├── models/
+│   ├── yolo_detector.py   # YOLOv8 detection implementation
+│   └── count_car.py       # Car counting implementation
+├── pages/
+│   ├── object_detection.py
+│   └── car_counter.py
+├── utils/
+│   └── camera.py          # Camera handling utilities
+└── requirements.txt       # Project dependencies
+```
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository.
+2. Create a feature branch:
+   ```bash
+   git checkout -b feature/NewFeature
+   ```
+3. Commit changes:
+   ```bash
+   git commit -m 'Add NewFeature'
+   ```
+4. Push to branch:
+   ```bash
+   git push origin feature/NewFeature
+   ```
+5. Submit a Pull Request.
+
+---
+
+## 🐛 Bug Reports
+
+Please report bugs by creating issues on GitHub with:
+
+- A detailed description of the issue.
+- Steps to reproduce.
+- Expected vs actual behavior.
+- System information.
+
+---
+
+## 🙏 Acknowledgments
+
+- **YOLOv8** by Ultralytics
+- **Streamlit** team for the amazing framework
+- **ByteTrack** for object tracking capabilities
+
+---
+
+## 📬 Contact
+
+For questions or feedback, please reach out through:
+
+- GitHub Issues
+- Email: viseshagarwal@outlook.com
+
+---
+
+## ⭐ Support
+
+If you find this project helpful, please consider giving it a ⭐ on GitHub!
+
+Made with ❤️ by **Team Visionary Minds**
+
+---
+
+## Contributors
+
+- [Visesh Agarwal](https://www.linkedin.com/in/viseshagarwal/)
+- [Shreya Goel](https://www.linkedin.com/in/shreya-goel-94694422a/)

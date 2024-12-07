@@ -4,4 +4,6 @@ opencv-python-headless>=4.8.0
 numpy>=1.24.0
 pyttsx3>=2.90
 wget>=3.2
+torch
+torchvision
 sentry_sdk
