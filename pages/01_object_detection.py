@@ -43,8 +43,8 @@ def show():
         st.success(f"✅ Model loaded successfully on: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU'}")
 
     # Sidebar controls with better styling
-    st.sidebar.markdown("<div class='sidebar-content'>",
-                        unsafe_allow_html=True)
+    # st.sidebar.markdown("<div class='sidebar-content'>",
+    #                     unsafe_allow_html=True)
     source = st.sidebar.selectbox("📥 Select Input Source", [
                                   "Webcam", "Upload Image"])
 
@@ -106,12 +106,31 @@ def show():
         else:
             st.markdown("### 🖼️ Image Upload")
             st.markdown("Upload an image to perform object detection")
-            run_image_upload(detector)
+            # Create placeholders for detection results before running image upload
+            with col2:
+                st.markdown("### 📊 Detection Results")
+                current_detections_placeholder = st.empty()
+                
+                if st.button("Clear Detections"):
+                    detector.clear_detections()
+
+            # Modified image upload function call with callback
+            def image_detection_callback(detector):
+                current_detections = detector.get_current_detections()
+                if current_detections:
+                    df_current = pd.DataFrame({
+                        'Object': list(current_detections.keys()),
+                        'Count': list(current_detections.values())
+                    })
+                    current_detections_placeholder.table(df_current)
+
+            run_image_upload(detector, callback=image_detection_callback)
 
     if not st.session_state.webcam_on:
         with col2:
-            st.markdown("### 📊 Detection Results")
-            st.info("Start webcam or upload an image to see detections")
+            if source != "Upload Image":
+                st.markdown("### 📊 Detection Results")
+                st.info("Start webcam or upload an image to see detections")
 
 if __name__ == "__main__":
     show()
