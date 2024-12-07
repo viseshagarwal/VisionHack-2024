@@ -108,15 +108,15 @@ class CarDetector:
 
         # Create two columns for video and metrics
         col1, col2 = st.columns([2, 1])
-        
+
         with col1:
             st.markdown("#### 🎬 Video Feed")
             frame_placeholder = st.empty()
-        
+
         with col2:
             st.markdown("#### 📈 Live Metrics")
             metrics_placeholder = st.empty()
-            
+
         st.markdown("#### 🚗 Vehicle Speed Tracking")
         speed_table_placeholder = st.empty()
 
@@ -187,8 +187,7 @@ class CarDetector:
 
                     # Draw bounding box
                     cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                    speed_text = f"Car {
-                        track_id} ({self.car_speeds.get(track_id, 0):.1f} km/h)"
+                    speed_text = f"Car {track_id} ({self.car_speeds.get(track_id, 0):.1f} km/h)"
                     cv2.putText(frame, speed_text, (x1, y1 - 5),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
@@ -214,11 +213,12 @@ class CarDetector:
                    frame, result, fps, frame_count):
         # Update frame
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame_placeholder.image(frame_rgb, channels="RGB", use_column_width=True)
+        frame_placeholder.image(
+            frame_rgb, channels="RGB", use_container_width=True)
 
         # Update metrics with better formatting
         metrics_placeholder.markdown(f"""
-        <div style='background-color: #f0f2f6; padding: 1rem; border-radius: 0.5rem;'>
+        <div style='background-color: #e3f2fd; padding: 1rem; border-radius: 0.5rem;'>
             <h4>Real-time Statistics</h4>
             <ul>
                 <li>FPS: {fps}</li>
@@ -248,7 +248,7 @@ class CarDetector:
 
     def _display_final_stats(self):
         st.markdown("### 📊 Final Statistics")
-        
+
         col1, col2 = st.columns(2)
         with col1:
             st.metric("Total Cars Tracked", len(self.unique_cars))
@@ -256,7 +256,7 @@ class CarDetector:
             if self.car_max_speeds:
                 max_speed = max(self.car_max_speeds.values())
                 st.metric("Highest Speed Recorded", f"{max_speed:.1f} km/h")
-        
+
         st.markdown("#### 🚗 Vehicle Speed Summary")
         final_stats = {
             "Car ID": [],
