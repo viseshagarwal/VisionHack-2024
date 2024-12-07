@@ -41,7 +41,7 @@ def main():
     with col2:
         st.markdown("""
         <div class='app-card'>
-            <h3 class='app-title'>🚗 Car Counter</h3>
+            <h3 class='app-title'>🚗 Vehicle Speed Tracker</h3>
             <p>Advanced vehicle tracking and analysis</p>
             <ul>
                 <li>Count vehicles in videos</li>
@@ -59,7 +59,21 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
+    #st.footer("VisionHack-2024 | Computer Vision Application | Made ❤️ by Team Visionary Minds")
 
+    footer = st.container()
+
+    with footer:
+        st.markdown("<br><br>",unsafe_allow_html=True)
+        col1,col2,col3 = st.columns([1,2,1])
+
+        with col2:
+            st.markdown(
+            "<p style='text-align: center; color: gray; font-size: 13px;'>" 
+            "VisionHack - 2024 | Computer Vision Applications | Made with ❤️ by Team Visionary Minds"
+            "</p>", 
+            unsafe_allow_html=True
+        )
 if __name__ == "__main__":
     Config.initialize()
     main()
