@@ -171,8 +171,8 @@ class YOLODetector:
             if not os.path.exists(self.model_path):
                 print(f"Downloading {self.model_name}...")
                 torch.hub.download_url_to_file(f"https://github.com/ultralytics/assets/releases/download/v0.0.0/{self.model_name}",
-                    self.model_path
-                )
+                                               self.model_path
+                                               )
 
             # Initialize model
             self.model = YOLO(self.model_path)
@@ -250,3 +250,13 @@ class YOLODetector:
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
         return annotated_frame
+
+    def process_image(self, image):
+        """Process an uploaded image"""
+        try:
+            results = self.model(image, device=self.device)
+            self.update_detections(results)
+            return self.draw_boxes(image, results)
+        except Exception as e:
+            print(f"Warning: Failed to process image: {e}")
+            return image

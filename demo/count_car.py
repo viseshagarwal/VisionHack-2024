@@ -255,11 +255,4 @@ if video_file is not None:
             final_stats["Car ID"].append(car_id)
             final_stats["Max Speed (km/h)"].append(f"{max_speed:.1f}")
 
-        st.table(final_stats)
-
-        # Cleanup files
-        if Path(output_path).exists():
-            Path(output_path).unlink()
-        Path(tfile.name).unlink()
-
         st.success(f"Video processing complete! Tracked {len(unique_cars)} unique cars.")
