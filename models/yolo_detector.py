@@ -25,8 +25,9 @@ class YOLODetector:
             self.model.to(self.device)
 
             self.detected_objects = defaultdict(int)
+            self.current_frame_detections = defaultdict(int)
             self.detection_threshold = 0.5
-            self.min_detections = 3
+            self.min_detections = 1  # Lowered for more responsive updates
 
             print(f"\nUsing YOLOv8x on: {self.device}")
 
@@ -34,12 +35,24 @@ class YOLODetector:
             raise Exception(f"Failed to initialize YOLODetector: {str(e)}")
 
     def update_detections(self, results):
+        # Clear current frame detections
+        self.current_frame_detections.clear()
+        
         for result in results:
             for box in result.boxes:
                 if float(box.conf) > self.detection_threshold:
                     cls = int(box.cls)
                     class_name = result.names[cls]
                     self.detected_objects[class_name] += 1
+                    self.current_frame_detections[class_name] += 1
+
+    def get_current_detections(self):
+        """Return detections from current frame"""
+        return dict(self.current_frame_detections)
+
+    def get_all_detections(self):
+        """Return all accumulated detections"""
+        return dict(self.detected_objects)
 
     def get_detected_items(self):
         return [item for item, count in self.detected_objects.items()

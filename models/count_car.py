@@ -268,5 +268,4 @@ class CarDetector:
             final_stats["Max Speed (km/h)"].append(f"{max_speed:.1f}")
 
         st.table(final_stats)
-        st.success(f"Video processing complete! Tracked {
-                   len(self.unique_cars)} unique cars.")
+        st.success(f"Video processing complete! Tracked {len(self.unique_cars)} unique cars.")

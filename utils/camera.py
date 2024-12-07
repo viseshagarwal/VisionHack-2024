@@ -3,35 +3,25 @@ import streamlit as st
 import numpy as np
 from config.settings import Config
 
-def run_webcam(detector):
-    frame_placeholder = st.empty()
-    stop_button = st.button("Stop")
+def run_webcam(detector, callback=None):
+    """Run webcam detection with optional callback for detection updates"""
+    FRAME_WINDOW = st.image([])
+    cap = cv2.VideoCapture(0)
 
-    try:
-        cap = None
-        for i in range(3):
-            cap = cv2.VideoCapture(i)
-            if cap is not None and cap.isOpened():
-                break
-            if cap is not None:
-                cap.release()
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
 
-        if cap is None or not cap.isOpened():
-            st.error("No working webcam found.")
-            return
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        processed_frame = detector.process_frame(frame)
+        FRAME_WINDOW.image(processed_frame)
 
-        while not stop_button:
-            ret, frame = cap.read()
-            if not ret:
-                break
+        # Call callback function if provided
+        if callback:
+            callback(detector)
 
-            processed_frame = detector.process_frame(frame)
-            rgb_frame = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
-            frame_placeholder.image(rgb_frame, channels="RGB", use_container_width=True)
-
-    finally:
-        if 'cap' in locals() and cap is not None:
-            cap.release()
+    cap.release()
 
 def run_image_upload(detector):
     uploaded_file = st.file_uploader("Choose an image...", type=Config.SUPPORTED_IMAGE_TYPES)

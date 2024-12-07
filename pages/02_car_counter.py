@@ -2,6 +2,7 @@ import streamlit as st
 from models.count_car import CarDetector
 import torch
 
+
 def show():
     st.markdown("""
     <style>
@@ -11,7 +12,8 @@ def show():
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown("<h1 class='title-text'>Car Counter and Speed Tracker</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='title-text'>Car Counter and Speed Tracker</h1>",
+                unsafe_allow_html=True)
     st.markdown("<p class='subtitle-text'>Upload a video to detect, count, and track cars with speed estimation</p>", unsafe_allow_html=True)
 
     # Add info box
@@ -35,8 +37,8 @@ def show():
     # File uploader with clear instructions
     st.markdown("### 📤 Upload Video")
     st.markdown("Select a video file to begin processing:")
-    
-    col1, col2, col3 = st.columns([1,2,1])
+
+    col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         video_file = st.file_uploader(
             "",  # Remove label as we have a header above
@@ -48,6 +50,7 @@ def show():
         st.markdown("### 🎥 Processing Video")
         st.markdown("The video is being processed. Please wait...")
         detector.process_video(video_file)
+
 
 if __name__ == "__main__":
     show()
