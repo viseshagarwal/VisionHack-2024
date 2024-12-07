@@ -99,11 +99,25 @@ class CarDetector:
         out = cv2.VideoWriter(output_path, fourcc,
                               self.video_fps, (width, height))
 
-        # Create Streamlit UI elements
-        progress_bar = st.progress(0)
-        col1, col2 = st.columns(2)
-        frame_placeholder = col1.empty()
-        metrics_placeholder = col2.empty()
+        # Create Streamlit UI elements with better organization
+        st.markdown("### 📊 Processing Status")
+        progress_container = st.container()
+        with progress_container:
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+
+        # Create two columns for video and metrics
+        col1, col2 = st.columns([2, 1])
+        
+        with col1:
+            st.markdown("#### 🎬 Video Feed")
+            frame_placeholder = st.empty()
+        
+        with col2:
+            st.markdown("#### 📈 Live Metrics")
+            metrics_placeholder = st.empty()
+            
+        st.markdown("#### 🚗 Vehicle Speed Tracking")
         speed_table_placeholder = st.empty()
 
         try:
@@ -200,16 +214,20 @@ class CarDetector:
                    frame, result, fps, frame_count):
         # Update frame
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame_placeholder.image(frame_rgb, channels="RGB")
+        frame_placeholder.image(frame_rgb, channels="RGB", use_column_width=True)
 
-        # Update metrics
+        # Update metrics with better formatting
         metrics_placeholder.markdown(f"""
-        ### Metrics
-        - FPS: {fps}
-        - Current Frame: {self.frame_number}/{frame_count}
-        - Cars in Frame: {len(result.boxes)}
-        - Total Unique Cars: {len(self.unique_cars)}
-        """)
+        <div style='background-color: #f0f2f6; padding: 1rem; border-radius: 0.5rem;'>
+            <h4>Real-time Statistics</h4>
+            <ul>
+                <li>FPS: {fps}</li>
+                <li>Frame: {self.frame_number}/{frame_count}</li>
+                <li>Cars in Frame: {len(result.boxes)}</li>
+                <li>Total Unique Cars: {len(self.unique_cars)}</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
         # Update speed table
         table_data = {
@@ -229,7 +247,17 @@ class CarDetector:
         speed_table_placeholder.table(table_data)
 
     def _display_final_stats(self):
-        st.markdown("### Final Speed Statistics")
+        st.markdown("### 📊 Final Statistics")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Total Cars Tracked", len(self.unique_cars))
+        with col2:
+            if self.car_max_speeds:
+                max_speed = max(self.car_max_speeds.values())
+                st.metric("Highest Speed Recorded", f"{max_speed:.1f} km/h")
+        
+        st.markdown("#### 🚗 Vehicle Speed Summary")
         final_stats = {
             "Car ID": [],
             "Max Speed (km/h)": []

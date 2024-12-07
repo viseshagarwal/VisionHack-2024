@@ -1,3 +1,4 @@
 *.pyc
 venv
 *.pt
+output_video.mp4
