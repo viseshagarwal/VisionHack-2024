@@ -168,7 +168,9 @@ Please report bugs by creating issues on GitHub with:
 For questions or feedback, please reach out through:
 
 - GitHub Issues
-- Email: - [Visesh Agawal](viseshagarwal@outlook.com) - [Shreya Goel](shreyagoel9560@gmail.com)
+- Email:
+  - [Visesh Agarwal](mailto:viseshagarwal@outlook.com)
+  - [Shreya Goel](mailto:shreyagoel9560@gmail.com)
 
 ---
 
