@@ -7,11 +7,16 @@ from config.settings import Config
 from collections import defaultdict
 
 torch.backends.cudnn.benchmark = True
-torch.cuda.set_device(0)
+
 
 class YOLODetector:
     def __init__(self):
         try:
+            if torch.cuda.is_available():
+                torch.cuda.set_device(0)
+            else:
+                print("CUDA is not available. Using CPU.")
+
             # Download model if it doesn't exist
             if not os.path.exists(Config.MODEL_PATH):
                 print(f"Downloading YOLOv8x model...")
@@ -21,7 +26,8 @@ class YOLODetector:
                 )
 
             self.model = YOLO(Config.MODEL_PATH)
-            self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+            self.device = torch.device(
+                'cuda' if torch.cuda.is_available() else 'cpu')
             self.model.to(self.device)
 
             self.detected_objects = defaultdict(int)
@@ -37,7 +43,7 @@ class YOLODetector:
     def update_detections(self, results):
         # Clear current frame detections
         self.current_frame_detections.clear()
-        
+
         for result in results:
             for box in result.boxes:
                 if float(box.conf) > self.detection_threshold:

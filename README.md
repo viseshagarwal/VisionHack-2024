@@ -51,8 +51,13 @@ A comprehensive computer vision application suite built with YOLOv8 and Streamli
 2. Create a new virtual environment:
 
    ```bash
-   python3 -m venv venv
+   # For Linux and Mac
+   python -m venv venv
    source venv/bin/activate
+
+   # For Windows
+   python -m venv venv
+   venv\Scripts\activate
    ```
 
 3. Install the dependencies:
@@ -61,7 +66,13 @@ A comprehensive computer vision application suite built with YOLOv8 and Streamli
    pip install -r requirements.txt
    ```
 
-4. Run the Streamlit app:
+4. Download Cuda Toolkit :
+
+   ```bash
+   https://developer.nvidia.com/cuda-downloads
+   ```
+
+5. Run the Streamlit app:
    ```bash
    streamlit run Home.py
    ```
@@ -118,6 +129,8 @@ VisionHack-2024/
 ├── pages/
 │   ├── object_detection.py
 │   └── car_counter.py
+├── ui/
+│   └── streamlit_app.py   # Streamlit UI components
 ├── utils/
 │   └── camera.py          # Camera handling utilities
 └── requirements.txt       # Project dependencies
